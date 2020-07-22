@@ -15,34 +15,16 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Component
 public class JavaReactor {
 
-
     @Autowired
     PersonHandler handler;
 
     @Bean
-    RouterFunction<ServerResponse> routerFunction() {
-//        return route()
-//                .GET("/person/{id}", accept(APPLICATION_JSON), handler::getPerson)
-//                .GET("/person", accept(APPLICATION_JSON), request -> {
-//                    request.pathVariable("")
-//                })
-//                .POST("/person", handler::createPerson)
-//                .build();
-
-
-        Mono<Integer> r = Mono.just(1)
-                .handle((i, sink) -> {
-                    if (i > 0) {
-                        if (i > 1) sink.next(3);
-                        else sink.next(4);
-                    }
-                });
-
-
-
-
-
-        return request -> r
+    RouterFunction<ServerResponse> javaRouterFunction() {
+        return route()
+                .GET("/person/{id}", accept(APPLICATION_JSON), handler::getPerson)
+                .GET("/person", accept(APPLICATION_JSON), request -> ServerResponse.ok().bodyValue("ok"))
+                .POST("/person", handler::createPerson)
+                .build();
     }
 
 }

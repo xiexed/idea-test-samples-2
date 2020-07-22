@@ -1,0 +1,4 @@
+GET http://localhost:8080/sse/12
+
+###
+GET http://localhost:8080/person

@@ -17,12 +17,11 @@ import java.lang.UnsupportedOperationException
 @SpringBootApplication
 class DemoApplication {
 
-
     @Bean
-    open fun router1(postHandler: PostHandler) = router {
+    fun router1(postHandler: PostHandler) = router {
         accept(MediaType.TEXT_HTML).nest {
-            GET("/") { ServerResponse.ok().render("index") }
-            GET("/sse/{param1}") { ServerResponse.ok().render("sse" + it.pathVariable("param1")) }
+            GET("/") { ServerResponse.ok().bodyValue("index") }
+            GET("/sse/{param1}") { ServerResponse.ok().bodyValue("sse" + it.pathVariable("param1")) }
         }
         "/api".nest {
             accept(MediaType.TEXT_EVENT_STREAM).nest {
@@ -43,10 +42,7 @@ class DemoApplication {
 class PostHandler {
 
     fun create(req: ServerRequest): Mono<ServerResponse> {
-
         val r = Mono.just(1).handle<Int>({ it, sink -> if (it > 0) sink.next(if (it > 1) 3 else 4) })
-
-
         return ServerResponse.ok().bodyValue(r)
     }
 
